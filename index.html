@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
+
+
+
+    <title>NY API</title>
+
+
+</head>
+
+
+<body>
+
+    <div class="wrapper">
+
+        <header class="header">
+
+            <h1>New York Times Search</h1>
+            
+
+
+        </header>
+
+        <section class="box">
+
+        
+            <div class="form">
+
+                <p>Search Term:</p>
+                <input class="search-boxes" type="text" name="">
+
+
+
+
+                <p>Number of records retrive:</p>
+                <input class="search-boxes" type="text" name="">
+
+        
+
+                <p>Start Year (optional):</p>
+                <input class="search-boxes" type="text" name=""> 
+
+
+                <p>End Year (optional):</p>
+                <input class="search-boxes" type="text" name="">
+
+            </div>
+
+
+
+
+
+
+            <div class="button-box">
+
+                <button>Search</button>
+                <button>Clear Results</button>
+
+            </div>
+
+
+
+
+        </section>
+
+
+        <section class="box">
+
+        </section>
+
+    </div>
+            
+
+
+        <footer class="footer">
+            
+
+        </footer>
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+      
+
+        //var apikey = "2fcbc1557deb48e4b6738c18b751e044"
+
+        //var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json&apikey=2fcbc1557deb48e4b6738c18b751e044"
+        //"https://www.omdbapi.com/?t=" + movie + "&y=&plot=short&apikey=40e9cece";
+        var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json";
+        var searchQuery = $("#search-query").val();
+        var searchNum = $("#search-num").val();
+        var startYear = $("#start-year").val();
+        var endYear = $("#end-year").val();
+
+
+        url += '?' + $.param({
+        'api-key': "2fcbc1557deb48e4b6738c18b751e044",
+        'q': searchQuery,
+        'begin_date': startYear+"0101",
+        'end_date': endYear+"1231"
+        });
+
+        
+        
+        console.log(searchQuery);
+          $(document).ready(function(){
+  $("#search-button").on("click", function(){
+    alert("I've been clicked!");
+    $.ajax({
+          url: url,
+          method: "GET"
+        }).done(function(nytimes) {
+          var results = nytimes.response.docs;
+          console.log(nytimes);
+        console.log(searchQuery);
+         for(i=0;i<searchNum;i++){
+            var displayResult = $("<div>");
+            var headline = results[i].headline.main;
+            var authur = results[i].byline;
+            var pubDate = results[i].pub_date;
+            var resultUrl = results[i].web_url;
+            console.log(resultUrl);
+
+            
+            headline.attr("class","results1");
+            authur.attr("class","results2");
+            pubDate.attr("class","results2");
+            resultUrl.attr("class","results2");
+            $("top-articles").append(displayResult);
+            displayResult.append(headline);
+            displayResult.append(authur);
+            displayResult.append(pubDate);
+            displayResult.append(resultUrl);
+         }
+       });
+      });
+      });
+     
+
+    </script>
+  </div>
+</body>
+
+</html>
